@@ -18,11 +18,45 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
  }
  
  function validateInput(testInput) {
-    
+    if (testInput === "") {
+        return "Empty"
+    } else if (isNaN(testInput)) {
+        return "Not a Number"
+    } else {
+        return "Is a Number"
+    }
  }
  
  function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
+    let fuelGood = '';
+    let cargoGood = '';
+    document.getElementById("pilotStatus").innerHTML = `Pilot ${pilot} is ready for launch`
+    document.getElementById("copilotStatus").innerHTML = `Co-pilot ${copilot} is ready for launch`;
     
+    if (fuelLevel < 10000) {
+        list.style.visibility = "visible";
+        document.getElementById("fuelStatus").innerHTML = "Fuel level too low for launch";
+        document.getElementById("launchStatus").innerHTML = "Shuttle Not Ready for Launch";
+        document.getElementById("launchStatus").style.color = "red";
+    } else {
+        document.getElementById("fuelStatus").innerHTML = "Fuel level high enough for launch";
+        fuelGood = true;
+    }
+
+    if (cargoLevel > 10000) {
+        list.style.visibility = "visible";
+        document.getElementById("cargoStatus").innerHTML = "Cargo mass too heavy for launch"
+        document.getElementById("launchStatus").innerHTML = "Shuttle Not Ready for Launch";
+        document.getElementById("launchStatus").style.color = "red";
+    } else {
+        document.getElementById("cargoStatus").innerHTML = "Cargo mass low enough for launch";
+        cargoGood = true;
+    }
+
+    if (fuelGood && cargoGood) {
+        document.getElementById("launchStatus").innerHTML = "Shuttle is Ready for Launch";
+        document.getElementById("launchStatus").style.color = "green";
+    }
  }
  
  async function myFetch() {
@@ -35,6 +69,7 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
  }
  
  function pickPlanet(planets) {
+    Math.floor(Math.random() * planets.length);
  }
  
  module.exports.addDestinationInfo = addDestinationInfo;
