@@ -3,6 +3,7 @@
 require('cross-fetch/polyfill');
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
+    let missionTarget = document.getElementById("missionTarget");
     // Here is the HTML formatting for our mission target div.
     /*
                  <h2>Mission Destination</h2>
@@ -15,6 +16,15 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
                  </ol>
                  <img src="">
     */
+   missionTarget.innerHTML = `<h2>Mission Destination</h2>
+                 <ol>
+                     <li>Name: ${name}</li>
+                     <li>Diameter: ${diameter}</li>
+                     <li>Star: ${star}</li>
+                     <li>Distance from Earth: ${distance}</li>
+                     <li>Number of Moons: ${moons}</li>
+                 </ol>
+                 <img src="${imageUrl}">`
  }
  
  function validateInput(testInput) {
@@ -30,8 +40,23 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
  function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
     let fuelGood = '';
     let cargoGood = '';
+    let pilotValidation = validateInput(pilot);
+    let copilotValidation = validateInput(copilot);
+    let fuelValidation = validateInput(fuelLevel);
+    let cargoValidation = validateInput(cargoLevel);
+
+
+    if (pilotValidation === "Empty" || copilotValidation === "Empty" || fuelValidation === "Empty" || cargoValidation === "Empty") {
+        alert("All fields are required!")
+    }
+    
+    if (pilotValidation === "Is a Number" || copilotValidation === "Is a Number" || fuelValidation === "Not a Number" || cargoValidation === "Not a Number") {
+        alert("Make sure to enter valid information for each field!")
+    }
+
     document.getElementById("pilotStatus").innerHTML = `Pilot ${pilot} is ready for launch`
     document.getElementById("copilotStatus").innerHTML = `Co-pilot ${copilot} is ready for launch`;
+
     
     if (fuelLevel < 10000) {
         list.style.visibility = "visible";
@@ -62,14 +87,15 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
  async function myFetch() {
      let planetsReturned;
  
-     planetsReturned = await fetch().then( function(response) {
+     planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
+        return response.json()
          });
  
      return planetsReturned;
  }
  
  function pickPlanet(planets) {
-    Math.floor(Math.random() * planets.length);
+    return planets[Math.floor(Math.random() * planets.length)];
  }
  
  module.exports.addDestinationInfo = addDestinationInfo;
