@@ -40,19 +40,6 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
  function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
     let fuelGood = '';
     let cargoGood = '';
-    let pilotValidation = validateInput(pilot);
-    let copilotValidation = validateInput(copilot);
-    let fuelValidation = validateInput(fuelLevel);
-    let cargoValidation = validateInput(cargoLevel);
-
-
-    if (pilotValidation === "Empty" || copilotValidation === "Empty" || fuelValidation === "Empty" || cargoValidation === "Empty") {
-        alert("All fields are required!")
-    }
-    
-    if (pilotValidation === "Is a Number" || copilotValidation === "Is a Number" || fuelValidation === "Not a Number" || cargoValidation === "Not a Number") {
-        alert("Make sure to enter valid information for each field!")
-    }
 
     document.getElementById("pilotStatus").innerHTML = `Pilot ${pilot} is ready for launch`
     document.getElementById("copilotStatus").innerHTML = `Co-pilot ${copilot} is ready for launch`;
